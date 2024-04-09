@@ -60,6 +60,13 @@ namespace ApplicationProject.ViewModels
             IsOpen = false;
             Title = "ANÁLISIS DE REPORTES";
             MenuLinks();
+            Task.Run(async () => await LoadDataAsync());
+        }
+
+        private async Task LoadDataAsync()
+        {
+            var queues = QueuesViewModel.GetInstance();
+           await queues.GetTotalsAsync();
         }
         private void MenuLinks()
         {

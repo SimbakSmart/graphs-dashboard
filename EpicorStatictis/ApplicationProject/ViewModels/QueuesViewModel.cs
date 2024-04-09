@@ -24,10 +24,26 @@ namespace ApplicationProject.ViewModels
         private int _totalClosed;
         #endregion
 
+
+        #region [SINGLENTON]
+        static QueuesViewModel instance;
+        public static QueuesViewModel GetInstance()
+        {
+            if (instance == null)
+            {
+                return new QueuesViewModel();
+            }
+
+            return instance;
+        }
+        #endregion
+
+
         public QueuesViewModel()
         {
+            instance = this;
             qs = new QueueServices();
-            Task.Run(async () => await LoadDataAsync());
+           // Task.Run(async () => await LoadDataAsync());
         }
 
         public async Task LoadDataAsync()
@@ -37,7 +53,7 @@ namespace ApplicationProject.ViewModels
            
         }
 
-        private async Task GetTotalsAsync(FiltersParams filters = null)
+        public  async Task GetTotalsAsync(FiltersParams filters = null)
         {
             if (filters != null)
             {
