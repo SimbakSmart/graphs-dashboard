@@ -70,7 +70,7 @@
                 <md:ColorZone  DockPanel.Dock="Top"
                                  Padding="16"
                                 Mode="PrimaryDark" >
-                    <!--NavBar-->
+                    <!--Color Zone Content-->
                     <DockPanel>
 
                         <!--Hamburger Button-->
@@ -93,10 +93,11 @@
                         </md:PopupBox>
 
                         <TextBlock x:Name="MainTitle" Text="{Binding Title}" 
-                                     HorizontalAlignment="Center" />
+                                     HorizontalAlignment="Center" 
+                                   Style="{StaticResource TitleColorZone}"/>
 
                     </DockPanel>
-                    <!--NavBar-->
+                    <!--Color Zone Content-->
                 </md:ColorZone>
 
                  <!--Content Control-->

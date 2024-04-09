@@ -10,6 +10,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Fonts\Anton-Regular.ttf" />
+    <None Remove="Fonts\LilitaOne-Regular.ttf" />
     <None Remove="Images\meeting.png" />
     <None Remove="Images\my_logo.png" />
   </ItemGroup>
@@ -31,6 +33,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Fonts\Anton-Regular.ttf" />
+    <Resource Include="Fonts\LilitaOne-Regular.ttf" />
     <Resource Include="Images\meeting.png" />
     <Resource Include="Images\my_logo.png" />
   </ItemGroup>
