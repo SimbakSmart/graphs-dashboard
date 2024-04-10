@@ -102,7 +102,8 @@
 
                  <!--Content Control-->
                 <Grid Grid.Row="1">
-                    <ContentControl Content="{Binding SelectedUserControl}"/>
+                    <ContentControl Margin="10"
+                                    Content="{Binding SelectedUserControl}"/>
                 </Grid>
                 <!--Content Control-->
 

@@ -7,8 +7,8 @@
     <Color x:Key="ToggleMenuLinkBackGroundColor">#0069c0</Color>
     <SolidColorBrush x:Key="ToggleMenuLinkBackGroundColorBrush" Color="{StaticResource ToggleMenuLinkBackGroundColor}" />
 
+    <Color x:Key="BackgroundModalColor">#bfbbbb</Color>
+    <SolidColorBrush x:Key="BackgroundModalColorBrush" Color="{StaticResource BackgroundModalColor}" />
 
-    <!--<Color x:Key="ToggleMenuLinkBackGroundColor">#FFAEAEAE</Color>
-    <SolidColorBrush x:Key="ToggleMenuLinkBackGroundColorBrush" Color="{StaticResource ToggleMenuLinkBackGroundColor}" />-->
 
 </ResourceDictionary>

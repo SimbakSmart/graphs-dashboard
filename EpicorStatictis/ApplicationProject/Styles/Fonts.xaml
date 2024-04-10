@@ -16,11 +16,24 @@
     <system:Double x:Key="FontSizeSmall">10</system:Double>
     <system:Double x:Key="FontSizeExtraSmall">8</system:Double>
 
-    <!--TitleTextExtraLarge-->
+    <!--Title Color Zone NavBar-->
     <Style TargetType="{x:Type TextBlock}" x:Key="TitleColorZone">
         <Setter Property="FontFamily" Value="{StaticResource LilitaOneRegular}" />
         <Setter Property="FontSize" Value="{StaticResource FontSizeExtraLarge}" />
     </Style>
+
+    <Style TargetType="{x:Type TextBlock}" x:Key="TitleCard">
+        <Setter Property="FontFamily" Value="{StaticResource AntonRegular}" />
+        <Setter Property="FontSize" Value="{StaticResource FontSizeLarge}" />
+    </Style>
+    
+    <Style TargetType="{x:Type TextBlock}" x:Key="SubTitleCard">
+        <Setter Property="FontFamily" Value="{StaticResource RobotoRegular}" />
+        <Setter Property="FontSize" Value="{StaticResource FontSizeLarge}" />
+        <Setter Property="Foreground" Value="#706f6e" />
+    </Style>
+
+
 
 
 
