@@ -195,6 +195,116 @@ namespace Infraestructure.Services
             return _list;
         }
 
+        public async Task<List<Queues>> GetTotalsByStatuseAsync(FiltersParams filters = null)
+        {
+            List<Queues> _list = null;
+            string _query = string.Empty;
+            try
+            {
 
+                if (filters != null)
+                {
+                    _query = QueuesSqlQueries.GetTotalByStatus(filters);
+                }
+                else
+                {
+                    _query = QueuesSqlQueries.GetTotalByStatus();
+                }
+
+
+
+                using (OdbcConnection con = new OdbcConnection(DBContext.GetConnectionString))
+                {
+                    await con.OpenAsync();
+                    using (OdbcCommand com = new OdbcCommand(_query, con))
+                    {
+                        if (filters != null)
+                        {
+                            com.CommandType = CommandType.Text;
+                            com.Parameters.Add("@StartDate", OdbcType.DateTime).Value = filters.StartDate;
+                            com.Parameters.Add("@EndDate", OdbcType.DateTime).Value = filters.EndDate;
+                        }
+
+                        using (OdbcDataReader reader = com.ExecuteReader())
+                        {
+
+                            _list = new List<Queues>();
+                            while (reader.Read())
+                            {
+                                _list.Add(new Queues.QueuesBuilder()
+                                                .WithStatus(reader["Status"].ToString())
+                                                .WithTotal(Convert.ToInt32(reader["Total"]))
+                                               .Build()
+                                               );
+                            }
+                            reader.Close();
+                        }
+
+                    }
+                }
+            }
+
+            catch
+            {
+                return null;
+            }
+            return _list;
+        }
+
+        public async  Task<List<Queues>> GetTotalsByUrgencyAsync(FiltersParams filters = null)
+        {
+            List<Queues> _list = null;
+            string _query = string.Empty;
+            try
+            {
+
+                if (filters != null)
+                {
+                    _query = QueuesSqlQueries.GetTotalByUrgency(filters);
+                }
+                else
+                {
+                    _query = QueuesSqlQueries.GetTotalByUrgency();
+                }
+
+
+
+                using (OdbcConnection con = new OdbcConnection(DBContext.GetConnectionString))
+                {
+                    await con.OpenAsync();
+                    using (OdbcCommand com = new OdbcCommand(_query, con))
+                    {
+                        if (filters != null)
+                        {
+                            com.CommandType = CommandType.Text;
+                            com.Parameters.Add("@StartDate", OdbcType.DateTime).Value = filters.StartDate;
+                            com.Parameters.Add("@EndDate", OdbcType.DateTime).Value = filters.EndDate;
+                        }
+
+                        using (OdbcDataReader reader = com.ExecuteReader())
+                        {
+
+                            _list = new List<Queues>();
+                            while (reader.Read())
+                            {
+                                _list.Add(new Queues.QueuesBuilder()
+                                                .WithUrgency(reader["Urgency"].ToString())
+                                                .WithTotal(Convert.ToInt32(reader["Total"]))
+                                               .Build()
+                                               );
+                            }
+                            reader.Close();
+                        }
+
+                    }
+                }
+            }
+
+            catch
+            {
+                return null;
+            }
+            return _list;
+        }
     }
 }

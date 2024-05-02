@@ -208,7 +208,7 @@
 
 
                     <!--Total By Range-->
-                    <Border ge:ResponsiveGrid.XS="12"  ge:ResponsiveGrid.SM="6" Height="400">
+                    <Border ge:ResponsiveGrid.XS="12"  ge:ResponsiveGrid.SM="6" Height="400" Margin="5" >
 
                         <md:Card  
                             md:ElevationAssist.Elevation="Dp3">
@@ -245,32 +245,129 @@
                     <!--Total By Range-->
 
 
-                    <Border ge:ResponsiveGrid.XS="12"  ge:ResponsiveGrid.SM="6">
+                    <!--Total By Status-->
+                    <Border ge:ResponsiveGrid.XS="12"  ge:ResponsiveGrid.SM="6" Height="400" Margin="5" >
+
+                        <md:Card  
+                              md:ElevationAssist.Elevation="Dp3">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="30" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+
+                                <TextBlock 
+                                    Grid.Row="0"
+                                    HorizontalAlignment="Center" 
+                                    Style="{StaticResource TitleColorZone}"
+                                    Text="TOTAL POR ESTATUS" />
+
+                                <gf:CartesianChart 
+                                       
+                                     Grid.Row="1"
+                                     Series="{Binding SeriesStatus}"
+                                     XAxes="{Binding XAxesStatus}"
+                                     />
+                            </Grid>
+                        </md:Card>
 
                     </Border>
+                    <!--Total By Status-->
 
 
                 </ge:ResponsiveGrid>
         </ScrollViewer>
 
-        <md:TransitionerSlide 
+            <md:TransitionerSlide 
             OpeningEffect="{md:TransitionEffect SlideInFromRight}">
-            <StackPanel>
-                <Button  
-                                        HorizontalAlignment="Right"
-                                       Height="50"
-                                        Width="130"
-                                       Margin="4"
-                                       Style="{StaticResource  MaterialDesignFlatDarkBgButton}"
-                                       Command="{x:Static md:Transitioner.MoveFirstCommand}">
-                    <StackPanel Orientation="Horizontal">
-                        <md:PackIcon Kind="ArrowLeftBoldCircle" Height="25" Width="25" />
-                        <TextBlock Text="Regresar"  Margin="4"/>
-                    </StackPanel>
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <ge:ResponsiveGrid>
+                        <Border ge:ResponsiveGrid.XS="12"  ge:ResponsiveGrid.SM="12"  >
+                            <Button  
+                                 HorizontalAlignment="Right"
+                                Height="50"
+                                 Width="130"
+                                Margin="4"
+                                Style="{StaticResource  MaterialDesignFlatDarkBgButton}"
+                                Command="{x:Static md:Transitioner.MoveFirstCommand}">  
+                                <StackPanel Orientation="Horizontal">
+                                    <md:PackIcon Kind="ArrowLeftBoldCircle" Height="25" Width="25" />
+                                    <TextBlock Text="Regresar"  Margin="4"/>
+                                </StackPanel>
 
-                </Button>
-            </StackPanel>
-        </md:TransitionerSlide>
+                            </Button>
+
+                        </Border>
+
+                          <!--Graph Pie Urgency-->
+                        <Border ge:ResponsiveGrid.XS="12"  ge:ResponsiveGrid.SM="6"  Margin="5" Height="425" >
+
+                            <md:Card  
+                            md:ElevationAssist.Elevation="Dp3">
+                                                    <Grid>
+                                                        <Grid.RowDefinitions>
+                                                            <RowDefinition Height="30" />
+                                                            <RowDefinition Height="*" />
+                                                        </Grid.RowDefinitions>
+
+                                    <TextBlock 
+                                  Grid.Row="0"
+                                  HorizontalAlignment="Center" 
+                                  Style="{StaticResource TitleColorZone}"
+                                  Text="TOTAL POR URGENCIAS" />
+                                                        
+                                    <!--<gf:PieChart
+                                        Grid.Row="1"  
+                                        Series="{Binding SeriesUrgency}"
+                                        IsClockwise="False"
+                                        Width="800"
+                                        Height="600"
+                                        InitialRotation="-90">
+                                    </gf:PieChart>-->
+                                                        
+                              
+
+                                    <!--<gf:PieChart
+                                           Grid.Row="1"                       
+                                           IsClockwise="False"
+                                           InitialRotation="-90"
+                                           AnimationsSpeed="00:00:00.500"
+                                          Series="{Binding SeriesUrgency }"
+                                        Width="600"
+                                        Height="400"
+                                        LegendTextSize="16"
+                                       
+                                          LegendPosition="Bottom">
+                                    </gf:PieChart>-->
+
+
+                                    <gf:PieChart
+                                           Grid.Row="1"                       
+                                           IsClockwise="False"
+                                           InitialRotation="-90"
+                                           AnimationsSpeed="00:00:00.500"
+                                          Series="{Binding SeriesUrgency }"
+                                        Width="600"
+                                        Height="400"
+                                        LegendTextSize="16"
+                                       
+                                          LegendPosition="Bottom">
+                                    </gf:PieChart>
+
+                                </Grid>
+                            </md:Card>
+
+                        </Border>
+                        <!--Graph Pie Urgency-->
+
+                        <Border ge:ResponsiveGrid.XS="12"  ge:ResponsiveGrid.SM="6"  Margin="5" Height="400" >
+
+                        </Border>
+                    </ge:ResponsiveGrid>
+                </ScrollViewer>
+
+               
+            </md:TransitionerSlide>
 
     </md:Transitioner>
 

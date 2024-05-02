@@ -9,6 +9,10 @@ using LiveChartsCore.Measure;
 using LiveChartsCore.SkiaSharpView.Painting;
 using SkiaSharp;
 using CommunityToolkit.Mvvm.Input;
+using LiveChartsCore.SkiaSharpView.Extensions;
+using System.Drawing;
+using System.Windows;
+using System.Xml.Linq;
 
 namespace ApplicationProject.ViewModels
 {
@@ -59,6 +63,27 @@ namespace ApplicationProject.ViewModels
         private List<Queues> _listByRange;
         #endregion
 
+        #region  GRAPH STATUS         
+        [ObservableProperty]
+        private ColumnSeries<double> _userSeriesStatus;
+
+        [ObservableProperty]
+        private List<Queues> _listStatus = null;
+
+        [ObservableProperty]
+        public ISeries[] _seriesStatus;
+
+        [ObservableProperty]
+        public Axis[] _xAxesStatus;
+        #endregion
+
+        #region GRAPH PIE URGENCY 
+        [ObservableProperty]
+        private List<Queues> _listUrgency = null;
+
+        [ObservableProperty]
+        private IEnumerable<ISeries> _seriesUrgency; 
+        #endregion
 
 
         #region [SINGLENTON]
@@ -89,7 +114,9 @@ namespace ApplicationProject.ViewModels
             await GetTotalsAsync();
             await BarGraphByResponsableAsync();
             await GetTotalsByRangeAsync();
+            await BarGraphBySatusAsync();    
             await qs.DisposeAsync();
+            await UrgencyPieChartAsync();
             IsLoading = false;
 
         }
@@ -162,6 +189,82 @@ namespace ApplicationProject.ViewModels
 
         }
 
+        private async Task BarGraphBySatusAsync(FiltersParams filters = null)
+        {
+            ListStatus?.Clear();
+            if (filters != null)
+            {
+                ListStatus = await qs.GetTotalsByStatuseAsync(filters);
+            }
+            else
+            {
+                ListStatus = await qs.GetTotalsByStatuseAsync();
+            }
+
+
+            UserSeriesStatus = new ColumnSeries<double>()
+            {
+                Name = "Reportes Activos",
+                Values = ListStatus.Select(q => (double)q.Total).ToList(),
+                Padding = 1,
+                MaxBarWidth = double.PositiveInfinity,
+                Fill = new SolidColorPaint(new SKColor(25, 118, 210, 255)),
+            };
+
+
+            Axis _axis = new Axis()
+            {
+                Labels = ListStatus.Select(q => q.Status).ToList(),
+                TextSize = 12,
+                LabelsAlignment = LiveChartsCore.Drawing.Align.Start,
+                IsVisible = true,
+                LabelsRotation = -90,
+                Position = AxisPosition.Start,
+                Padding = new LiveChartsCore.Drawing.Padding(0)
+            };
+
+            SeriesStatus = new ISeries[] { UserSeriesStatus };
+            XAxesStatus = new Axis[] { _axis };
+
+        }
+
+        private async Task UrgencyPieChartAsync(FiltersParams filters = null)
+        {
+            int _index = 0;
+            ListUrgency?.Clear();
+
+            if (filters != null)
+            {
+                ListUrgency = await qs.GetTotalsByUrgencyAsync(filters);
+            }
+            else
+            {
+                ListUrgency = await qs.GetTotalsByUrgencyAsync();
+            }
+
+            string[] _urgencyArray = ListUrgency.Select(q => q.Urgency).ToArray();
+            double[] _totalUrgencyArray = ListUrgency.Select(q => (double)q.Total).ToArray();
+
+
+            // Define custom colors for pie slices
+            //var sliceColors = new[] { SKColors.Purple, SKColors.Blue, SKColors.DarkSeaGreen, SKColors.Green, SKColors.Red };
+            var sliceColors = new[] { SKColors.Red, SKColors.DeepSkyBlue, SKColors.DarkSeaGreen,SKColors.Yellow};
+
+            SeriesUrgency = _totalUrgencyArray.AsPieSeries((value, series) =>
+            {
+                series.Name = _urgencyArray[_index++ % _urgencyArray.Length] + " " + value.ToString();
+                series.DataLabelsPosition = LiveChartsCore.Measure.PolarLabelsPosition.Middle;
+                series.DataLabelsSize = 20;
+                series.DataLabelsPaint = new SolidColorPaint(new SKColor(255, 255, 255));
+                // series.DataLabelsPaint = new SolidColorPaint(new SKColor(0, 0, 0));
+                series.ToolTipLabelFormatter = point => $"{point.StackedValue!.Share:P2}";
+                // Assign custom color to the slice
+                series.Fill = new SolidColorPaint(sliceColors[_index % sliceColors.Length]);
+
+            });
+        }
+
+
         [RelayCommand]
         private async Task SendFiltersAsync()
         {
@@ -179,6 +282,8 @@ namespace ApplicationProject.ViewModels
                     await GetTotalsAsync(filters);
                     await BarGraphByResponsableAsync(filters);
                     await GetTotalsByRangeAsync(filters);
+                    await BarGraphBySatusAsync(filters);
+                    await UrgencyPieChartAsync(filters);
                 }
             }
             catch

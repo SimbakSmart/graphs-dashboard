@@ -128,5 +128,81 @@ namespace Infraestructure.Utils
             return _sqlQuery;
         }
 
+        public static string GetTotalByStatus(FiltersParams filters= null)
+        {
+            if(filters!= null)
+            {
+                _sqlQuery = @"
+                            SELECT 
+                            Scs.Name AS Status,
+                            COUNT(*) AS Total
+                            FROM SupportCall AS Sc
+                            LEFT JOIN SupportCallStatus AS Scs ON Scs.SupportCallStatusID=Sc.StatusID
+                            WHERE YEAR(Sc.OpenDate) >= 2020 AND Sc.Closed=0 AND Sc.AssignToQueueID IS NOT NULL
+                            AND OpenDate >= ? AND OpenDate <= ?
+                            GROUP BY Scs.Name
+                            ";
+            }
+            else
+            {
+                _sqlQuery = @"
+                            SELECT 
+                            Scs.Name AS Status,
+                            COUNT(*) AS Total
+                            FROM SupportCall AS Sc
+                            LEFT JOIN SupportCallStatus AS Scs ON Scs.SupportCallStatusID=Sc.StatusID
+                            WHERE YEAR(Sc.OpenDate) >= 2020 AND Sc.Closed=0 AND Sc.AssignToQueueID IS NOT NULL
+                            GROUP BY Scs.Name
+                            ";
+            }
+            return _sqlQuery;
+        }
+
+        public static string GetTotalByUrgency(FiltersParams filters= null)
+        {
+            
+            if(filters!= null)
+            {
+
+            _sqlQuery = @"            
+            SELECT 
+            CASE
+            WHEN U.Entry IS NULL THEN 'NO DEFINITOS'
+            ELSE
+             SUBSTRING(U.Entry, 4, LEN(U.Entry)) 
+            END
+            AS [Urgency],
+            COUNT(*) AS [Total]
+            FROM SupportCall AS Sc
+            LEFT JOIN [EpicorITSMApplication].[dbo].[ValueListEntry] AS U   ON U.ValueListEntryID = Sc.UrgencyID
+            WHERE YEAR(Sc.OpenDate) >=2020 AND Sc.Closed=0
+            AND Sc.OpenDate >= ? AND Sc.OpenDate <= ?
+            GROUP BY U.Entry  ORDER BY Urgency DESC
+           ";
+
+
+            }
+            else
+            {
+             _sqlQuery = @"            
+            SELECT 
+            CASE
+            WHEN U.Entry IS NULL THEN 'NO DEFINITOS'
+            ELSE
+             SUBSTRING(U.Entry, 4, LEN(U.Entry)) 
+            END
+            AS [Urgency],
+            COUNT(*) AS [Total]
+            FROM SupportCall AS Sc
+            LEFT JOIN [EpicorITSMApplication].[dbo].[ValueListEntry] AS U   ON U.ValueListEntryID = Sc.UrgencyID
+            WHERE YEAR(Sc.OpenDate) >=2020 AND Sc.Closed=0
+            GROUP BY U.Entry  ORDER BY Urgency DESC
+           ";
+
+            }
+
+            return _sqlQuery;
+        }
+
     }
 }
