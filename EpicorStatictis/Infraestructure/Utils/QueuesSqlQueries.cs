@@ -8,6 +8,7 @@ namespace Infraestructure.Utils
     {
        
         private static string _sqlQuery= string.Empty;
+
         public static string GetTotalsQuery(FiltersParams filters= null)
         {
             
@@ -78,6 +79,52 @@ namespace Infraestructure.Utils
                         ";
             }
 
+            return _sqlQuery;
+        }
+
+        public static string GetTotalByRangeDays(FiltersParams filters = null)
+        {
+            if (filters != null)
+            {
+
+                _sqlQuery = @"
+                         SELECT
+                           ISNULL(Q.Name,'ASIGNADA A USUARIOS') AS [Queue],
+                           SUM(CASE WHEN DATEDIFF(DAY, OpenDate, GETDATE()) BETWEEN 0 AND 2 THEN 1 ELSE 0 END) AS [RangeOne],
+                           SUM(CASE WHEN DATEDIFF(DAY, OpenDate, GETDATE()) BETWEEN 3 AND 7 THEN 1 ELSE 0 END) AS [RangeTwo],
+                           SUM(CASE WHEN DATEDIFF(DAY, OpenDate, GETDATE()) BETWEEN 8 AND 15 THEN 1 ELSE 0 END) AS [RangeThree],
+                           SUM(CASE WHEN DATEDIFF(DAY, OpenDate, GETDATE()) BETWEEN 16 AND 20 THEN 1 ELSE 0 END) AS [RangeFour],
+                           SUM(CASE WHEN DATEDIFF(DAY, OpenDate, GETDATE()) >= 21 THEN 1 ELSE 0 END) AS [RangeFive],
+                           COUNT(*) AS [Total]  
+                         FROM SupportCall AS Sc
+                         LEFT JOIN Queue AS  Q ON Q.QueueID = Sc.AssignToQueueID
+                         WHERE YEAR(Sc.OpenDate) >= 2020 AND SC.Closed=0 
+                         AND  Sc.OpenDate >= ? AND Sc.OpenDate <= ?
+                         GROUP BY
+                           Q.Name
+                         ORDER BY Q.Name;
+                        ";
+            }
+            else
+            {
+                _sqlQuery = @"
+                    SELECT
+                      ISNULL(Q.Name,'ASIGNADA A USUARIOS') AS [Queue],
+                      SUM(CASE WHEN DATEDIFF(DAY, OpenDate, GETDATE()) BETWEEN 0 AND 2 THEN 1 ELSE 0 END) AS [RangeOne],
+                      SUM(CASE WHEN DATEDIFF(DAY, OpenDate, GETDATE()) BETWEEN 3 AND 7 THEN 1 ELSE 0 END) AS [RangeTwo],
+                      SUM(CASE WHEN DATEDIFF(DAY, OpenDate, GETDATE()) BETWEEN 8 AND 15 THEN 1 ELSE 0 END) AS [RangeThree],
+                      SUM(CASE WHEN DATEDIFF(DAY, OpenDate, GETDATE()) BETWEEN 16 AND 20 THEN 1 ELSE 0 END) AS [RangeFour],
+                      SUM(CASE WHEN DATEDIFF(DAY, OpenDate, GETDATE()) >= 21 THEN 1 ELSE 0 END) AS [RangeFive],
+                      COUNT(*) AS [Total]  
+                    FROM SupportCall AS Sc
+                    LEFT JOIN Queue AS  Q ON Q.QueueID = Sc.AssignToQueueID
+                    WHERE YEAR(Sc.OpenDate) >= 2020 AND SC.Closed=0
+                    GROUP BY
+                      Q.Name
+                    ORDER BY Q.Name;
+                     ";
+
+            }
             return _sqlQuery;
         }
 

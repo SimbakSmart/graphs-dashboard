@@ -8,7 +8,6 @@ using LiveChartsCore;
 using LiveChartsCore.Measure;
 using LiveChartsCore.SkiaSharpView.Painting;
 using SkiaSharp;
-using ApplicationProject.Views;
 using CommunityToolkit.Mvvm.Input;
 
 namespace ApplicationProject.ViewModels
@@ -55,6 +54,12 @@ namespace ApplicationProject.ViewModels
         public Axis[] _xAxesBar;
         #endregion
 
+        #region  TABLE RANGE DAYS 
+        [ObservableProperty]
+        private List<Queues> _listByRange;
+        #endregion
+
+
 
         #region [SINGLENTON]
         static QueuesViewModel instance;
@@ -83,6 +88,7 @@ namespace ApplicationProject.ViewModels
             IsLoading = true;
             await GetTotalsAsync();
             await BarGraphByResponsableAsync();
+            await GetTotalsByRangeAsync();
             await qs.DisposeAsync();
             IsLoading = false;
 
@@ -143,7 +149,18 @@ namespace ApplicationProject.ViewModels
             XAxesBar = new Axis[] { _axis };
         }
 
-    
+        private async Task GetTotalsByRangeAsync(FiltersParams filters = null)
+        {
+            if (filters != null)
+            {
+                ListByRange = await qs.GetTotalsByRangeDayseAsync(filters);
+            }
+            else
+            {
+                ListByRange = await qs.GetTotalsByRangeDayseAsync();
+            }
+
+        }
 
         [RelayCommand]
         private async Task SendFiltersAsync()
@@ -161,6 +178,7 @@ namespace ApplicationProject.ViewModels
 
                     await GetTotalsAsync(filters);
                     await BarGraphByResponsableAsync(filters);
+                    await GetTotalsByRangeAsync(filters);
                 }
             }
             catch

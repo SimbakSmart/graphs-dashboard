@@ -135,5 +135,66 @@ namespace Infraestructure.Services
             return _list;
         }
 
+        public async Task<List<Queues>> GetTotalsByRangeDayseAsync(FiltersParams filters = null)
+        {
+            List<Queues> _list = null;
+            string _query = string.Empty;
+            try
+            {
+
+                if (filters != null)
+                {
+                    _query = QueuesSqlQueries.GetTotalByRangeDays(filters);
+                }
+                else
+                {
+                    _query = QueuesSqlQueries.GetTotalByRangeDays();
+                }
+
+
+                using (OdbcConnection con = new OdbcConnection(DBContext.GetConnectionString))
+                {
+                    await con.OpenAsync();
+                    using (OdbcCommand com = new OdbcCommand(_query, con))
+                    {
+                        if (filters != null)
+                        {
+                            com.CommandType = CommandType.Text;
+                            com.Parameters.Add("@StartDate", OdbcType.DateTime).Value = filters.StartDate;
+                            com.Parameters.Add("@EndDate", OdbcType.DateTime).Value = filters.EndDate;
+                        }
+
+                        using (OdbcDataReader reader = com.ExecuteReader())
+                        {
+
+                            _list = new List<Queues>();
+                            while (reader.Read())
+                            {
+                                _list.Add(new Queues.QueuesBuilder()
+                                                .WithName(reader["Queue"].ToString())
+                                                .WithRangeOne(Convert.ToInt32(reader["RangeOne"]))
+                                                .WithRangeTwo(Convert.ToInt32(reader["RangeTwo"]))
+                                                .WithRangeThree(Convert.ToInt32(reader["RangeThree"]))
+                                                .WithRangeFour(Convert.ToInt32(reader["RangeFour"]))
+                                                .WithRangeFive(Convert.ToInt32(reader["RangeFive"]))
+                                                .WithTotal(Convert.ToInt32(reader["Total"]))
+                                               .Build()
+                                               );
+                            }
+                            reader.Close();
+                        }
+
+                    }
+                }
+            }
+
+            catch
+            {
+                return null;
+            }
+            return _list;
+        }
+
+
     }
 }

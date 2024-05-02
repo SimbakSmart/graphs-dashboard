@@ -207,7 +207,50 @@
                 <!--Bar Graphs-->
 
 
-            </ge:ResponsiveGrid>
+                    <!--Total By Range-->
+                    <Border ge:ResponsiveGrid.XS="12"  ge:ResponsiveGrid.SM="6" Height="400">
+
+                        <md:Card  
+                            md:ElevationAssist.Elevation="Dp3">
+                            <StackPanel>
+
+
+                                <TextBlock 
+                                       Grid.Row="0"
+                                       HorizontalAlignment="Center" 
+                                       Style="{StaticResource TitleColorZone}"
+                                       Text="RANGO POR DÍAS" />
+                                <DataGrid
+                                   ScrollViewer.VerticalScrollBarVisibility="Visible"
+                                Height="380"
+                              Margin="7"                             
+                            AutoGenerateColumns="False"
+                            CanUserAddRows="False"
+                            HeadersVisibility="All"
+                            ItemsSource="{Binding ListByRange}">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Queue" Binding="{Binding Name}" />
+                                        <DataGridTextColumn Header="0-2 Días" Binding="{Binding RangeOne}" />
+                                        <DataGridTextColumn Header="3-7 Días" Binding="{Binding RangeTwo}" />
+                                        <DataGridTextColumn Header="8-15 Días" Binding="{Binding RangeThree}" />
+                                        <DataGridTextColumn Header="16-20 Días" Binding="{Binding RangeFour}" />
+                                        <DataGridTextColumn Header="Mayor a 21 Días" Binding="{Binding RangeFive}" />
+                                        <DataGridTextColumn Header="Gran Total" Binding="{Binding Total}" />
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </StackPanel>
+                        </md:Card>
+
+                    </Border>
+                    <!--Total By Range-->
+
+
+                    <Border ge:ResponsiveGrid.XS="12"  ge:ResponsiveGrid.SM="6">
+
+                    </Border>
+
+
+                </ge:ResponsiveGrid>
         </ScrollViewer>
 
         <md:TransitionerSlide 
