@@ -13,5 +13,11 @@ namespace Infraestructure.Interfaces
         Task<List<T>> GetTotalsByStatuseAsync(FiltersParams filters = null);
 
         Task<List<T>> GetTotalsByUrgencyAsync(FiltersParams filters = null);
+
+        Task<List<T>> GetTotalsByPriorityAsync(FiltersParams filters = null);
+
+        Task<List<T>> GetTotalsByImpactAsync(FiltersParams filters = null);
+
+        Task<List<T>> GetTotalsByServiceAsync(FiltersParams filters = null);
     }
 }

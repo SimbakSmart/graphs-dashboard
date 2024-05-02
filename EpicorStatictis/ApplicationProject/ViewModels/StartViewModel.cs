@@ -4,6 +4,7 @@ using ApplicationProject.UC;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
+using System.Windows;
 using System.Windows.Controls;
 using MenuItem = ApplicationProject.Utils.MenuItem;
 
@@ -82,6 +83,23 @@ namespace ApplicationProject.ViewModels
         private void ToggleMenu()
         {
             IsOpen = IsOpen ? true : false;
+        }
+
+        [RelayCommand]
+        private void FullScreen()
+        {
+            var currentWindow = Application.Current.MainWindow;
+
+            if (currentWindow.WindowState == WindowState.Maximized)
+            {
+                currentWindow.WindowState = WindowState.Normal;
+                currentWindow.WindowStyle = WindowStyle.SingleBorderWindow;
+            }
+            else
+            {
+                currentWindow.WindowState = WindowState.Maximized;
+                currentWindow.WindowStyle = WindowStyle.None;
+            }
         }
     }
 }

@@ -10,6 +10,9 @@ namespace Core.Models
         public int TotalOpen { get; set; }
         public string Urgency { get; set; }
         public string Priority { get; set; }
+        public string Service { get; set; }
+       
+        public string Impact { get; set; }
 
         public int RangeOne { get; set; }
         public int RangeTwo { get; set; }
@@ -25,6 +28,8 @@ namespace Core.Models
             Total = builder.Total;
             Urgency = builder.Urgency;
             Priority = builder.Priority;
+            Impact = builder.Impact;
+            Service = builder.Service;
             TotalClosed = builder.TotalClosed;
             TotalOpen = builder.TotalOpen;
             RangeOne = builder.RangeOne;
@@ -44,6 +49,8 @@ namespace Core.Models
             public string Urgency { get; private set; }
             public string Priority { get; set; }
 
+            public string Service { get; set; }
+            public string Impact { get; set; }
             public int RangeOne { get; set; }
             public int RangeTwo { get; set; }
             public int RangeThree { get; set; }
@@ -88,6 +95,20 @@ namespace Core.Models
                 Priority = priority;
                 return this;
             }
+            public QueuesBuilder WithImpact(string impact)
+            {
+                Impact = impact;
+                return this;
+            }
+
+            public QueuesBuilder WithService(string service)
+            {
+              Service = service;
+                return this;
+            }
+
+
+
 
             public QueuesBuilder WithRangeOne(int rangeOne)
             {

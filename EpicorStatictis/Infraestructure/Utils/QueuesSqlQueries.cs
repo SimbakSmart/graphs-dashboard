@@ -204,5 +204,132 @@ namespace Infraestructure.Utils
             return _sqlQuery;
         }
 
+        public static string GetTotalByPriority(FiltersParams filters = null)
+        {
+
+            if (filters != null)
+            {
+                _sqlQuery = @" 
+                    SELECT 
+                    CASE
+                    WHEN U.Entry IS NULL THEN 'NO DEFINITOS'
+                    ELSE
+                     SUBSTRING(U.Entry, 4, LEN(U.Entry)) 
+                    END
+                    AS [Priority],
+                    COUNT(*) AS [Total]
+                    FROM SupportCall AS Sc
+                    LEFT JOIN [EpicorITSMApplication].[dbo].[ValueListEntry] AS U   ON U.ValueListEntryID = Sc.PriorityID
+                    WHERE YEAR(Sc.OpenDate) >=2020 AND Sc.Closed=0
+                    AND Sc.OpenDate >= ? AND Sc.OpenDate <= ?
+                    GROUP BY U.Entry  ";
+
+
+            }
+            else
+            {
+                _sqlQuery = @" 
+                    SELECT 
+                    CASE
+                    WHEN U.Entry IS NULL THEN 'NO DEFINITOS'
+                    ELSE
+                     SUBSTRING(U.Entry, 4, LEN(U.Entry)) 
+                    END
+                    AS [Priority],
+                    COUNT(*) AS [Total]
+                    FROM SupportCall AS Sc
+                    LEFT JOIN [EpicorITSMApplication].[dbo].[ValueListEntry] AS U   ON U.ValueListEntryID = Sc.PriorityID
+                    WHERE YEAR(Sc.OpenDate) >=2020 AND Sc.Closed=0
+                    GROUP BY U.Entry  ";
+
+            }
+
+            return _sqlQuery;
+        }
+
+        public static string GetTotalByImpact(FiltersParams filters = null)
+        {
+
+            if (filters != null)
+            {
+                _sqlQuery = @"SELECT 
+                            CASE
+                            WHEN U.Entry IS NULL THEN 'NO DEFINITOS'
+                            ELSE
+                             SUBSTRING(U.Entry, 4, LEN(U.Entry)) 
+                            END
+                            AS [Impact],
+                            COUNT(*) AS [Total]
+                            FROM SupportCall AS Sc
+                            LEFT JOIN [EpicorITSMApplication].[dbo].[ValueListEntry] AS U   ON U.ValueListEntryID = Sc.ImpactID
+                            WHERE YEAR(Sc.OpenDate) >=2020 AND Sc.Closed=0
+                            AND Sc.OpenDate >= ? AND Sc.OpenDate <= ?
+                            GROUP BY U.Entry   ORDER BY [Impact] DESC  ";
+
+
+            }
+            else
+            {
+                _sqlQuery = @"SELECT 
+                        CASE
+                        WHEN U.Entry IS NULL THEN 'NO DEFINITOS'
+                        ELSE
+                         SUBSTRING(U.Entry, 4, LEN(U.Entry)) 
+                        END
+                        AS [Impact],
+                        COUNT(*) AS [Total]
+                        FROM SupportCall AS Sc
+                        LEFT JOIN [EpicorITSMApplication].[dbo].[ValueListEntry] AS U   ON U.ValueListEntryID = Sc.ImpactID
+                        WHERE YEAR(Sc.OpenDate) >=2020 AND Sc.Closed=0
+                        GROUP BY U.Entry   ORDER BY [Impact] DESC ";
+
+            }
+
+            return _sqlQuery;
+        }
+
+
+        public static string GetTotalByService(FiltersParams filters = null)
+        {
+
+            if (filters != null)
+            {
+                _sqlQuery = @"SELECT 
+                            CASE 
+                            WHEN Sc.SupportCallType ='I' THEN 'Incident'
+                            WHEN Sc.SupportCallType ='R' THEN 'Request Fo Change'
+                            WHEN Sc.SupportCallType ='S' THEN 'Service Request'
+                            ELSE
+                            'NO DEFINIDO'
+                            END AS [Service],
+                            COUNT(*) AS [Total]
+                            FROM SupportCall AS Sc
+                            WHERE YEAR(Sc.OpenDate) >=2020 AND Sc.Closed=0
+                           AND Sc.OpenDate >= ? AND Sc.OpenDate <= ?
+                            GROUP BY Sc.SupportCallType
+                             ";
+
+
+            }
+            else
+            {
+                _sqlQuery = @"SELECT 
+                                CASE 
+                                WHEN Sc.SupportCallType ='I' THEN 'Incident'
+                                WHEN Sc.SupportCallType ='R' THEN 'Request Fo Change'
+                                WHEN Sc.SupportCallType ='S' THEN 'Service Request'
+                                ELSE
+                                'NO DEFINIDO'
+                                END AS [Service],
+                                COUNT(*) AS [Total]
+                                FROM SupportCall AS Sc
+                                WHERE YEAR(Sc.OpenDate) >=2020 AND Sc.Closed=0
+                                GROUP BY Sc.SupportCallType
+                                 ";
+
+            }
+
+            return _sqlQuery;
+        }
     }
 }

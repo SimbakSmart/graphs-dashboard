@@ -85,7 +85,7 @@
                             StaysOpen="False">
                             <StackPanel>
                                 <Button Content="Hello World"  Command="{Binding MaxAppCommand}"/>
-                                <Button Content="Nice Popup" />
+                                <Button Content="Nice Popup" Command="{Binding FullScreenCommand}" />
                                 <Button Content="Can't Touch This" IsEnabled="False" />
                                 <Separator/>
                                 <Button Content="Goodbye" />

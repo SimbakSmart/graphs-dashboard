@@ -300,7 +300,7 @@
                         </Border>
 
                           <!--Graph Pie Urgency-->
-                        <Border ge:ResponsiveGrid.XS="12"  ge:ResponsiveGrid.SM="6"  Margin="5" Height="425" >
+                        <Border ge:ResponsiveGrid.XS="12"  ge:ResponsiveGrid.SM="6"  Margin="5" Height="400" >
 
                             <md:Card  
                             md:ElevationAssist.Elevation="Dp3">
@@ -316,39 +316,14 @@
                                   Style="{StaticResource TitleColorZone}"
                                   Text="TOTAL POR URGENCIAS" />
                                                         
-                                    <!--<gf:PieChart
-                                        Grid.Row="1"  
-                                        Series="{Binding SeriesUrgency}"
-                                        IsClockwise="False"
-                                        Width="800"
-                                        Height="600"
-                                        InitialRotation="-90">
-                                    </gf:PieChart>-->
-                                                        
-                              
-
-                                    <!--<gf:PieChart
-                                           Grid.Row="1"                       
-                                           IsClockwise="False"
-                                           InitialRotation="-90"
-                                           AnimationsSpeed="00:00:00.500"
-                                          Series="{Binding SeriesUrgency }"
-                                        Width="600"
-                                        Height="400"
-                                        LegendTextSize="16"
-                                       
-                                          LegendPosition="Bottom">
-                                    </gf:PieChart>-->
-
-
                                     <gf:PieChart
                                            Grid.Row="1"                       
                                            IsClockwise="False"
                                            InitialRotation="-90"
                                            AnimationsSpeed="00:00:00.500"
                                           Series="{Binding SeriesUrgency }"
-                                        Width="600"
-                                        Height="400"
+                                        Width="800"
+                                        Height="380"
                                         LegendTextSize="16"
                                        
                                           LegendPosition="Bottom">
@@ -360,9 +335,108 @@
                         </Border>
                         <!--Graph Pie Urgency-->
 
+                        <!--Graph Pie Priority-->
                         <Border ge:ResponsiveGrid.XS="12"  ge:ResponsiveGrid.SM="6"  Margin="5" Height="400" >
+                            <md:Card  
+                               md:ElevationAssist.Elevation="Dp3">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="30" />
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
 
+                                    <TextBlock 
+                               Grid.Row="0"
+                               HorizontalAlignment="Center" 
+                               Style="{StaticResource TitleColorZone}"
+                               Text="TOTAL POR PRIORIDAD" />
+
+                                                            <gf:PieChart
+                                        Grid.Row="1"                       
+                                        IsClockwise="False"
+                                        InitialRotation="-90"
+                                        AnimationsSpeed="00:00:00.500"
+                                       Series="{Binding SeriesPriority }"
+                                     Width="800"
+                                     Height="380"
+                                     LegendTextSize="16"
+            
+                                       LegendPosition="Bottom">
+                                    </gf:PieChart>
+
+                                </Grid>
+                            </md:Card>
                         </Border>
+                        <!--Graph Pie Priority-->
+                        
+                        <!--Graph Pie Impact-->
+                        <Border ge:ResponsiveGrid.XS="12"  ge:ResponsiveGrid.SM="6"  Margin="5" Height="400" >
+                            <md:Card  
+                            md:ElevationAssist.Elevation="Dp3">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="30" />
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+
+                                    <TextBlock 
+                                    Grid.Row="0"
+                                    HorizontalAlignment="Center" 
+                                    Style="{StaticResource TitleColorZone}"
+                                    Text="TOTAL POR IMPACTO" /> 
+
+                                    <gf:PieChart
+                                     Grid.Row="1"                       
+                                     IsClockwise="False"
+                                     InitialRotation="-90"
+                                     AnimationsSpeed="00:00:00.500"
+                                    Series="{Binding SeriesImpact}"
+                                  Width="800"
+                                  Height="380"
+                                  LegendTextSize="16"
+            
+                                    LegendPosition="Bottom">
+                                    </gf:PieChart>
+
+                                </Grid>
+                            </md:Card>
+                        </Border>
+                        <!--Graph Pie Impact-->
+
+                        <!--Graph Pie Service-->
+                        <Border ge:ResponsiveGrid.XS="12"  ge:ResponsiveGrid.SM="6"  Margin="5" Height="400" >
+                            <md:Card  
+                                md:ElevationAssist.Elevation="Dp3">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="30" />
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+
+                                    <TextBlock 
+                            Grid.Row="0"
+                            HorizontalAlignment="Center" 
+                            Style="{StaticResource TitleColorZone}"
+                            Text="TOTAL POR SERVICIO" />
+
+                                                        <gf:PieChart
+                                     Grid.Row="1"                       
+                                     IsClockwise="False"
+                                     InitialRotation="-90"
+                                     AnimationsSpeed="00:00:00.500"
+                                    Series="{Binding SeriesService }"
+                                  Width="800"
+                                  Height="380"
+                                  LegendTextSize="16"
+             
+                                LegendPosition="Bottom">
+                                    </gf:PieChart>
+
+                                </Grid>
+                            </md:Card>
+                        </Border>
+                        <!--Graph Pie Service-->
+
                     </ge:ResponsiveGrid>
                 </ScrollViewer>
 

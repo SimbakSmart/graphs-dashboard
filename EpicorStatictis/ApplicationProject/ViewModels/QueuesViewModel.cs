@@ -82,8 +82,34 @@ namespace ApplicationProject.ViewModels
         private List<Queues> _listUrgency = null;
 
         [ObservableProperty]
-        private IEnumerable<ISeries> _seriesUrgency; 
+        private IEnumerable<ISeries> _seriesUrgency;
         #endregion
+
+        #region GRAPH PIE PRIORITY  
+        [ObservableProperty]
+        private List<Queues> _listPriority = null;
+
+        [ObservableProperty]
+        private IEnumerable<ISeries> _seriesPriority;
+        #endregion
+
+
+        #region GRAPH PIE IMPACT   
+        [ObservableProperty]
+        private List<Queues> _listImpact = null;
+
+        [ObservableProperty]
+        private IEnumerable<ISeries> _seriesImpact;
+        #endregion
+
+        #region GRAPH PIE SERVICE 
+        [ObservableProperty]
+        private List<Queues> _listService = null;
+
+        [ObservableProperty]
+        private IEnumerable<ISeries> _seriesService;
+        #endregion
+
 
 
         #region [SINGLENTON]
@@ -115,8 +141,12 @@ namespace ApplicationProject.ViewModels
             await BarGraphByResponsableAsync();
             await GetTotalsByRangeAsync();
             await BarGraphBySatusAsync();    
-            await qs.DisposeAsync();
             await UrgencyPieChartAsync();
+            await PriorityPieChartAsync();
+            await ImpactPieChartAsync();
+            await ServicePieChartAsync();
+
+            await qs.DisposeAsync();
             IsLoading = false;
 
         }
@@ -245,10 +275,12 @@ namespace ApplicationProject.ViewModels
             string[] _urgencyArray = ListUrgency.Select(q => q.Urgency).ToArray();
             double[] _totalUrgencyArray = ListUrgency.Select(q => (double)q.Total).ToArray();
 
-
+            SKColor yellowColor = new SKColor(240, 180, 45, 255);
+            SKColor greenColor = new SKColor(70, 202, 182, 255);
+            SKColor redColor = new SKColor(228, 103, 87, 255);
+            SKColor brownColor = new SKColor(146, 104, 18, 255);
             // Define custom colors for pie slices
-            //var sliceColors = new[] { SKColors.Purple, SKColors.Blue, SKColors.DarkSeaGreen, SKColors.Green, SKColors.Red };
-            var sliceColors = new[] { SKColors.Red, SKColors.DeepSkyBlue, SKColors.DarkSeaGreen,SKColors.Yellow};
+            var sliceColors = new[] { redColor, greenColor, yellowColor, brownColor};
 
             SeriesUrgency = _totalUrgencyArray.AsPieSeries((value, series) =>
             {
@@ -256,7 +288,6 @@ namespace ApplicationProject.ViewModels
                 series.DataLabelsPosition = LiveChartsCore.Measure.PolarLabelsPosition.Middle;
                 series.DataLabelsSize = 20;
                 series.DataLabelsPaint = new SolidColorPaint(new SKColor(255, 255, 255));
-                // series.DataLabelsPaint = new SolidColorPaint(new SKColor(0, 0, 0));
                 series.ToolTipLabelFormatter = point => $"{point.StackedValue!.Share:P2}";
                 // Assign custom color to the slice
                 series.Fill = new SolidColorPaint(sliceColors[_index % sliceColors.Length]);
@@ -264,6 +295,113 @@ namespace ApplicationProject.ViewModels
             });
         }
 
+        private async Task PriorityPieChartAsync(FiltersParams filters = null)
+        {
+            int _index = 0;
+            ListPriority?.Clear();
+
+            if (filters != null)
+            {
+                ListPriority = await qs.GetTotalsByPriorityAsync(filters);
+            }
+            else
+            {
+                ListPriority = await qs.GetTotalsByPriorityAsync();
+            }
+
+            string[] _priorityArray = ListPriority.Select(q => q.Priority).ToArray();
+            double[] _totalPriorityArray = ListPriority.Select(q => (double)q.Total).ToArray();
+
+            SKColor blueColor = new SKColor(41, 121, 255);
+            SKColor orangeColor = new SKColor(255, 109, 0);
+            SKColor pinkColor = new SKColor(255, 23, 68);
+            SKColor greenColor = new SKColor(0, 151, 167);
+            var sliceColors = new[] { pinkColor, orangeColor, blueColor, greenColor };
+
+            SeriesPriority = _totalPriorityArray.AsPieSeries((value, series) =>
+            {
+                series.Name = _priorityArray[_index++ % _priorityArray.Length] + " " + value.ToString();
+                series.DataLabelsPosition = LiveChartsCore.Measure.PolarLabelsPosition.Middle;
+                series.DataLabelsSize = 20;
+                series.DataLabelsPaint = new SolidColorPaint(new SKColor(255, 255, 255));
+                series.ToolTipLabelFormatter = point => $"{point.StackedValue!.Share:P2}";
+                series.Fill = new SolidColorPaint(sliceColors[_index % sliceColors.Length]);
+
+            });
+        }
+
+
+        private async Task ImpactPieChartAsync(FiltersParams filters = null)
+        {
+            int _index = 0;
+            ListImpact?.Clear();
+
+            if (filters != null)
+            {
+                ListImpact = await qs.GetTotalsByImpactAsync(filters);
+            }
+            else
+            {
+                ListImpact = await qs.GetTotalsByImpactAsync();
+            }
+
+            string[] _impactArray = ListImpact.Select(q => q.Impact).ToArray();
+            double[] _totalImpactArray = ListImpact.Select(q => (double)q.Total).ToArray();
+
+            SKColor blueColor2 = new SKColor(41, 121, 255);
+            SKColor orangeColor2 = new SKColor(255, 109, 0);
+            SKColor pinkColor2 = new SKColor(255, 23, 68);
+            SKColor greenColor2 = new SKColor(0, 151, 167);
+            var sliceColors = new[] { pinkColor2, orangeColor2, blueColor2, greenColor2 };
+
+            SeriesImpact= _totalImpactArray.AsPieSeries((value, series) =>
+            {
+                series.Name = _impactArray[_index++ % _impactArray.Length] + " " + value.ToString();
+                series.DataLabelsPosition = LiveChartsCore.Measure.PolarLabelsPosition.Middle;
+                series.DataLabelsSize = 20;
+                series.DataLabelsPaint = new SolidColorPaint(new SKColor(255, 255, 255));
+                series.ToolTipLabelFormatter = point => $"{point.StackedValue!.Share:P2}";
+                series.Fill = new SolidColorPaint(sliceColors[_index % sliceColors.Length]);
+
+            });
+        }
+
+
+        private async Task ServicePieChartAsync(FiltersParams filters = null)
+        {
+            int _index = 0;
+            ListService?.Clear();
+
+            if (filters != null)
+            {
+                ListService = await qs.GetTotalsByServiceAsync(filters);
+            }
+            else
+            {
+                ListService = await qs.GetTotalsByServiceAsync();
+            }
+
+            string[] _serviceArray = ListService.Select(q => q.Service).ToArray();
+            double[] _totalServiceArray = ListService.Select(q => (double)q.Total).ToArray();
+
+            SKColor yellowColor = new SKColor(240, 180, 45, 255);
+            SKColor greenColor = new SKColor(70, 202, 182, 255);
+            SKColor redColor = new SKColor(228, 103, 87, 255);
+            SKColor brownColor = new SKColor(146, 104, 18, 255);
+        
+            var sliceColors = new[] { redColor, greenColor, yellowColor, brownColor };
+
+            SeriesService = _totalServiceArray.AsPieSeries((value, series) =>
+            {
+                series.Name = _serviceArray[_index++ % _serviceArray.Length] + " " + value.ToString();
+                series.DataLabelsPosition = LiveChartsCore.Measure.PolarLabelsPosition.Middle;
+                series.DataLabelsSize = 20;
+                series.DataLabelsPaint = new SolidColorPaint(new SKColor(255, 255, 255));
+                series.ToolTipLabelFormatter = point => $"{point.StackedValue!.Share:P2}";
+                series.Fill = new SolidColorPaint(sliceColors[_index % sliceColors.Length]);
+
+            });
+        }
 
         [RelayCommand]
         private async Task SendFiltersAsync()
@@ -284,6 +422,12 @@ namespace ApplicationProject.ViewModels
                     await GetTotalsByRangeAsync(filters);
                     await BarGraphBySatusAsync(filters);
                     await UrgencyPieChartAsync(filters);
+                    await PriorityPieChartAsync(filters);
+                    await ImpactPieChartAsync(filters);
+                    await ServicePieChartAsync(filters);
+
+                    await qs.DisposeAsync();
+
                 }
             }
             catch
