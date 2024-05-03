@@ -13,19 +13,6 @@ namespace Infraestructure.Utils
         {
             if (filters != null)
             {
-                //_sqlQuery = @"
-                //        SELECT
-                //        CASE
-                //        WHEN Q.Name IS NULL THEN 'Asignadas a sistemas'
-                //        ELSE
-                //        REPLACE(Q.Name,'_',' ')
-                //        END AS [Queue],
-                //        COUNT(*) AS Total
-                //        FROM SupportCall AS SC
-                //        LEFT JOIN Queue AS Q  ON Q.QueueID = SC.AssignToQueueID
-                //        WHERE Closed =0 AND YEAR(OpenDate) >= 2020 AND OpenDate >= ? AND OpenDate <= ?
-                //        GROUP BY  Q.Name ORDER BY TOTAL DESC
-                //      ";
 
                     _sqlQuery = @"SELECT 
                         Au.DisplayName AS Name,
@@ -49,6 +36,36 @@ namespace Infraestructure.Utils
                         ";
             }
 
+            return _sqlQuery;
+        }
+
+        public static string GetTotalByStatus(FiltersParams filters = null)
+        {
+            if (filters != null)
+            {
+                _sqlQuery = @"
+                            SELECT 
+                        Scs.Name As Status,
+                        COUNT(*) AS Total
+                        FROM SupportCall AS Sc
+                        LEFT JOIN SupportCallStatus AS Scs ON Scs.SupportCallStatusID=Sc.StatusID
+                        WHERE YEAR(Sc.OpenDate) >= 2020 AND Sc.Closed=0 AND Sc.AssignToUserID IS NOT NULL
+                        AND OpenDate >= ? AND OpenDate <= ?
+                        GROUP BY Scs.Name
+                            ";
+            }
+            else
+            {
+                _sqlQuery = @"
+                           SELECT 
+                            Scs.Name As Status,
+                            COUNT(*) AS Total
+                            FROM SupportCall AS Sc
+                            LEFT JOIN SupportCallStatus AS Scs ON Scs.SupportCallStatusID=Sc.StatusID
+                            WHERE YEAR(Sc.OpenDate) >= 2020 AND Sc.Closed=0 AND Sc.AssignToUserID IS NOT NULL
+                            GROUP BY Scs.Name
+                            ";
+            }
             return _sqlQuery;
         }
     }

@@ -15,7 +15,8 @@
         <mv:UsersViewModel />
     </UserControl.DataContext>
 
-    <!--Transitioner-->
+    <Grid>
+        <!--Transitioner-->
     <md:Transitioner SelectedIndex="0" >
         <ScrollViewer VerticalScrollBarVisibility="Auto">
 
@@ -178,81 +179,119 @@
 
                 <Border ge:ResponsiveGrid.XS="12"  ge:ResponsiveGrid.SM="6" Height="780"  Margin="5 20" >
 
-                    <md:Card  
+                        <md:Card  
                          md:ElevationAssist.Elevation="Dp3">
-                        <Grid>
+                            <Grid>
 
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="30" />
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="30" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
 
-                            <TextBlock 
+                                <TextBlock 
                     Grid.Row="0"
                     HorizontalAlignment="Center" 
                     Style="{StaticResource TitleColorZone}"
                     Text="TOTAL ACTIVOS POR USUARIO" />
 
-                            <lvc:CartesianChart 
+                                <lvc:CartesianChart 
                                 Grid.Row="1"
                                 Series="{Binding SeriesBarCollection}" 
                                 LegendLocation="Bottom">
-                                <lvc:CartesianChart.AxisX>
-                                    <lvc:Axis Title="Tickets" 
+                                    <lvc:CartesianChart.AxisX>
+                                        <lvc:Axis Title="Tickets" 
                                               LabelFormatter="{Binding UserFormatter}">
-                                        
-                                    </lvc:Axis>
-                                </lvc:CartesianChart.AxisX>
-                                <lvc:CartesianChart.AxisY>
-                                    <lvc:Axis Title="Tickets Abiertos" 
+
+                                        </lvc:Axis>
+                                    </lvc:CartesianChart.AxisX>
+                                    <lvc:CartesianChart.AxisY>
+                                        <lvc:Axis Title="Tickets Abiertos" 
                                    FontSize="15" 
                                    FontWeight="ExtraBold"
-                                   Labels="{Binding UserLabels}"></lvc:Axis>        
-                                </lvc:CartesianChart.AxisY>
-                                <lvc:CartesianChart.DataTooltip>
-                                    <lvc:DefaultTooltip SelectionMode="SharedYValues"></lvc:DefaultTooltip>
-                                </lvc:CartesianChart.DataTooltip>
-                            </lvc:CartesianChart>
+                                   Labels="{Binding UserLabels}"></lvc:Axis>
+                                    </lvc:CartesianChart.AxisY>
+                                    <lvc:CartesianChart.DataTooltip>
+                                        <lvc:DefaultTooltip SelectionMode="SharedYValues"></lvc:DefaultTooltip>
+                                    </lvc:CartesianChart.DataTooltip>
+                                </lvc:CartesianChart>
 
 
+
+                            </Grid>
+                        </md:Card>
+                    </Border>
+
+                    <Border ge:ResponsiveGrid.XS="12"  ge:ResponsiveGrid.SM="6" Height="780"  Margin="5 20" >
+
+                        <Grid>
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <md:Card  
+                            md:ElevationAssist.Elevation="Dp3">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="30" />
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+
+                                    <TextBlock 
+                                  Grid.Row="0"
+                                        Height="300"
+                                  HorizontalAlignment="Center" 
+                                  Style="{StaticResource TitleColorZone}"
+                                  Text="TOTAL POR ESTATUS" />
+
+
+                                    <lvc:CartesianChart
+                                        Grid.Row="1"
+                                        Series="{Binding StatusCollection}" LegendLocation="Left">
+                                        <lvc:CartesianChart.AxisX>
+                                            <lvc:Axis Title="Salesman" Labels="{Binding StatusLabels}"></lvc:Axis>
+                                        </lvc:CartesianChart.AxisX>
+                                        <lvc:CartesianChart.AxisY>
+                                            <lvc:Axis Title="Sold Apps" LabelFormatter="{Binding StatusFormatter}"></lvc:Axis>
+                                        </lvc:CartesianChart.AxisY>
+                                    </lvc:CartesianChart>
+
+                                </Grid>
+                            </md:Card>
 
                         </Grid>
-                    </md:Card>
-                    <!--<lvc:CartesianChart Series="{Binding SeriesBarCollection}" LegendLocation="Bottom">
-                        <lvc:CartesianChart.AxisX>
-                            <lvc:Axis Title="Tickets" LabelFormatter="{Binding UserFormatter}"></lvc:Axis>
-                        </lvc:CartesianChart.AxisX>
-                        <lvc:CartesianChart.AxisY>
-                            <lvc:Axis Title="Tickets Abiertos" 
-                   FontSize="15" 
-                   FontWeight="Bold"
-                   Labels="{Binding UserLabels}"></lvc:Axis>
-                        </lvc:CartesianChart.AxisY>
-                        <lvc:CartesianChart.DataTooltip>
-                            <lvc:DefaultTooltip SelectionMode="SharedYValues"></lvc:DefaultTooltip>
-                        </lvc:CartesianChart.DataTooltip>
-                    </lvc:CartesianChart>-->
-                </Border>
+                        
+                        
+                        
+                    </Border>
 
-            </ge:ResponsiveGrid>
+                </ge:ResponsiveGrid>
 
         </ScrollViewer>
     </md:Transitioner>
+    
+    
+        <!--LOADING-->
+        <md:Card Background="{StaticResource BackgroundModalColorBrush}"   
+         Opacity="0.8"
+    Visibility="{Binding IsLoading,Mode=TwoWay,Converter={StaticResource BooleanToVisibilityConverter}}">
 
-    <!--<Grid>
-        <lvc:CartesianChart Series="{Binding SeriesBarCollection}" LegendLocation="Bottom">
-            <lvc:CartesianChart.AxisX>
-                <lvc:Axis Title="Salesman" LabelFormatter="{Binding UserFormatter}"></lvc:Axis>
-            </lvc:CartesianChart.AxisX>
-            <lvc:CartesianChart.AxisY>
-                <lvc:Axis Title="Sold Apps" 
-                          FontSize="15" 
-                          FontWeight="Bold"
-                          Labels="{Binding UserLabels}"></lvc:Axis>
-            </lvc:CartesianChart.AxisY>
-            <lvc:CartesianChart.DataTooltip>
-                <lvc:DefaultTooltip SelectionMode="SharedYValues"></lvc:DefaultTooltip>
-            </lvc:CartesianChart.DataTooltip>
-        </lvc:CartesianChart>
-    </Grid>-->
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top">
+
+                <ProgressBar
+             Margin="0 100 0 0"
+            IsIndeterminate="True"
+            Width="50"
+            Height="50"
+            Style="{StaticResource MaterialDesignCircularProgressBar}"
+            Value="50" />
+                            <TextBlock Text="Cargando..."
+              Style="{StaticResource TitleCard}"
+              Foreground="{StaticResource LightColorBrush}" />
+            </StackPanel>
+
+        </md:Card>
+        <!--LOADING-->
+    </Grid>
+
 </UserControl>
