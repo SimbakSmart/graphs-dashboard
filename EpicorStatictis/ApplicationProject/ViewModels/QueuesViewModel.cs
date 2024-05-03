@@ -10,9 +10,6 @@ using LiveChartsCore.SkiaSharpView.Painting;
 using SkiaSharp;
 using CommunityToolkit.Mvvm.Input;
 using LiveChartsCore.SkiaSharpView.Extensions;
-using System.Drawing;
-using System.Windows;
-using System.Xml.Linq;
 
 namespace ApplicationProject.ViewModels
 {
@@ -188,6 +185,7 @@ namespace ApplicationProject.ViewModels
                 Padding = 1,
                 MaxBarWidth = double.PositiveInfinity,
                 Fill = new SolidColorPaint(new SKColor(25, 118, 210, 255)),
+              
 
 
             };
@@ -199,7 +197,8 @@ namespace ApplicationProject.ViewModels
                 IsVisible = true,
                 LabelsRotation = -90,
                 Position = AxisPosition.Start,
-                Padding = new LiveChartsCore.Drawing.Padding(0)
+                Padding = new LiveChartsCore.Drawing.Padding(0),
+               
             };
 
             SeriesBar = new ISeries[] { UserSeriesBar };

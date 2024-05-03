@@ -201,7 +201,11 @@
                                     Series="{Binding SeriesBar}"
                                     XAxes="{Binding XAxesBar}"
                                     />
-                        </Grid>
+
+
+                              
+
+                            </Grid>
                     </md:Card>
                 </Border>
                 <!--Bar Graphs-->

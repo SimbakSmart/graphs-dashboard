@@ -3,10 +3,256 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mv="clr-namespace:ApplicationProject.ViewModels"
+             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:ge="clr-namespace:SourceChord.GridExtra;assembly=GridExtra.Wpf"
              xmlns:local="clr-namespace:ApplicationProject.UC"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <TextBlock Text="Users Control" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-    </Grid>
+
+    <UserControl.DataContext>
+        <mv:UsersViewModel />
+    </UserControl.DataContext>
+
+    <!--Transitioner-->
+    <md:Transitioner SelectedIndex="0" >
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+
+            <ge:ResponsiveGrid>
+                <!--Totals Cards-->
+                <Border ge:ResponsiveGrid.XS="12"  ge:ResponsiveGrid.SM="6" >
+
+                    <!--Totals Cards-->
+                    <StackPanel Orientation="Horizontal">
+
+                        <!--Gran Total-->
+                        <md:Card                      
+            md:ElevationAssist.Elevation="Dp2"
+            Width="150"
+            Height="90"
+            UniformCornerRadius="6">
+
+                            <StackPanel HorizontalAlignment="Center" Margin="5">
+                                <TextBlock HorizontalAlignment="Center" 
+                        VerticalAlignment="Center"
+                 Style="{StaticResource TitleCard}"
+                 Text="TOTAL DE REGISTROS" />
+
+                                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                      Padding="0 2"
+                      Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                      Text="{Binding GranTotal,Mode=TwoWay}" />
+
+                                <md:PackIcon
+                Height="25"
+                 Width="25"
+                 Kind="FolderOpenOutline" 
+                 HorizontalAlignment="Right"/>
+                            </StackPanel>
+                        </md:Card>
+                        <!--Gran Total-->
+
+                        <!--Total Cerrados-->
+                        <md:Card                      
+               md:ElevationAssist.Elevation="Dp3"
+               Margin="6 0 0 0"
+               Width="150"
+               Height="90"
+               UniformCornerRadius="6">
+
+                            <StackPanel HorizontalAlignment="Center" Margin="5">
+                                <TextBlock HorizontalAlignment="Center" 
+                       VerticalAlignment="Center"
+                Style="{StaticResource TitleCard}"
+                Text="TOTAL CERRADOS" />
+
+                                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                 Padding="0 2"
+                Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                 Text="{Binding TotalClosed,Mode=TwoWay}" />
+
+                                <md:PackIcon
+              Height="25"
+               Width="25"
+               Kind="FolderLockOutline" 
+               HorizontalAlignment="Right"/>
+
+                            </StackPanel>
+                        </md:Card>
+                        <!--Total Cerrados-->
+
+                        <!--Total Activos-->
+                        <md:Card                      
+                md:ElevationAssist.Elevation="Dp3"
+                Margin="6 0 0 0"
+                Width="150"
+                Height="90"
+                UniformCornerRadius="6">
+
+                            <StackPanel HorizontalAlignment="Center" Margin="5">
+                                <TextBlock HorizontalAlignment="Center" 
+                        VerticalAlignment="Center"
+                 Style="{StaticResource TitleCard}"
+                 Text="TOTAL ACTIVOS" />
+
+                                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                      Padding="0 2"
+                     Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                      Text="{Binding TotalOpen,Mode=TwoWay}" />
+
+                                <md:PackIcon
+              Height="25"
+              Width="25"
+              Kind="FolderLockOpenOutline" 
+              HorizontalAlignment="Right"/>
+                            </StackPanel>
+                        </md:Card>
+                        <!--Total Activos-->
+
+
+                    </StackPanel>
+                    <!--Totals Cards-->
+                </Border>
+                <!--Totals Cards-->
+
+                <!--Date Pickers-->
+                <Border ge:ResponsiveGrid.XS="12"  ge:ResponsiveGrid.SM="6"  >
+                    <StackPanel Orientation="Horizontal" 
+                 HorizontalAlignment="Right" 
+                 VerticalAlignment="Top">
+                        <DatePicker
+              SelectedDate="{Binding StartDate}"
+               Width="140"
+               md:HintAssist.HelperText="{Binding StarDateMessage}"
+               md:HintAssist.Hint="Fecha Inicio"
+               Style="{StaticResource MaterialDesignOutlinedDatePicker}" />
+
+                        <DatePicker
+               SelectedDate="{Binding EndDate}"
+               Margin="5 0 0 0"
+               Width="140"
+               md:HintAssist.HelperText="{Binding EndDateMessage}"
+               md:HintAssist.Hint="Fecha Final"
+               Style="{StaticResource MaterialDesignOutlinedDatePicker}" />
+
+                        <Button  
+                 Height="50" 
+                 Margin="4 0"
+                 IsEnabled="{Binding IsActive}"
+                 Style="{StaticResource  MaterialDesignFlatDarkBgButton}"
+                 Command="{Binding SendFiltersCommand}">
+                            <StackPanel Orientation="Horizontal">
+                                <md:PackIcon Kind="Magnify" Height="25" Width="25" />
+                                <TextBlock Text="Buscar"  Margin="4"/>
+                            </StackPanel>
+
+                        </Button>
+
+                        <Button  
+                 Height="50" 
+                 Margin="1 0 0 0"
+                 IsEnabled="{Binding IsActive}"
+                 Style="{StaticResource  MaterialDesignFlatDarkBgButton}"
+                 Command="{Binding RefreshCommand}">
+                            <StackPanel Orientation="Horizontal">
+                                <md:PackIcon Kind="Autorenew" Height="25" Width="25" />
+                                <TextBlock Text="Recargar"  Margin="4"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button  
+             Margin="1 0 0 0"
+            Height="50" 
+            Style="{StaticResource  MaterialDesignFlatDarkBgButton}"
+             Command="{x:Static md:Transitioner.MoveNextCommand}">
+                            <StackPanel Orientation="Horizontal">
+                                <md:PackIcon Kind="ChartPie" Height="25" Width="25" />
+                                <TextBlock Text="Graficas"  Margin="4"/>
+                            </StackPanel>
+
+                        </Button>
+                    </StackPanel>
+                </Border>
+
+
+                <Border ge:ResponsiveGrid.XS="12"  ge:ResponsiveGrid.SM="6" Height="780"  Margin="5 20" >
+
+                    <md:Card  
+                         md:ElevationAssist.Elevation="Dp3">
+                        <Grid>
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+
+                            <TextBlock 
+                    Grid.Row="0"
+                    HorizontalAlignment="Center" 
+                    Style="{StaticResource TitleColorZone}"
+                    Text="TOTAL ACTIVOS POR USUARIO" />
+
+                            <lvc:CartesianChart 
+                                Grid.Row="1"
+                                Series="{Binding SeriesBarCollection}" 
+                                LegendLocation="Bottom">
+                                <lvc:CartesianChart.AxisX>
+                                    <lvc:Axis Title="Tickets" 
+                                              LabelFormatter="{Binding UserFormatter}">
+                                        
+                                    </lvc:Axis>
+                                </lvc:CartesianChart.AxisX>
+                                <lvc:CartesianChart.AxisY>
+                                    <lvc:Axis Title="Tickets Abiertos" 
+                                   FontSize="15" 
+                                   FontWeight="ExtraBold"
+                                   Labels="{Binding UserLabels}"></lvc:Axis>        
+                                </lvc:CartesianChart.AxisY>
+                                <lvc:CartesianChart.DataTooltip>
+                                    <lvc:DefaultTooltip SelectionMode="SharedYValues"></lvc:DefaultTooltip>
+                                </lvc:CartesianChart.DataTooltip>
+                            </lvc:CartesianChart>
+
+
+
+                        </Grid>
+                    </md:Card>
+                    <!--<lvc:CartesianChart Series="{Binding SeriesBarCollection}" LegendLocation="Bottom">
+                        <lvc:CartesianChart.AxisX>
+                            <lvc:Axis Title="Tickets" LabelFormatter="{Binding UserFormatter}"></lvc:Axis>
+                        </lvc:CartesianChart.AxisX>
+                        <lvc:CartesianChart.AxisY>
+                            <lvc:Axis Title="Tickets Abiertos" 
+                   FontSize="15" 
+                   FontWeight="Bold"
+                   Labels="{Binding UserLabels}"></lvc:Axis>
+                        </lvc:CartesianChart.AxisY>
+                        <lvc:CartesianChart.DataTooltip>
+                            <lvc:DefaultTooltip SelectionMode="SharedYValues"></lvc:DefaultTooltip>
+                        </lvc:CartesianChart.DataTooltip>
+                    </lvc:CartesianChart>-->
+                </Border>
+
+            </ge:ResponsiveGrid>
+
+        </ScrollViewer>
+    </md:Transitioner>
+
+    <!--<Grid>
+        <lvc:CartesianChart Series="{Binding SeriesBarCollection}" LegendLocation="Bottom">
+            <lvc:CartesianChart.AxisX>
+                <lvc:Axis Title="Salesman" LabelFormatter="{Binding UserFormatter}"></lvc:Axis>
+            </lvc:CartesianChart.AxisX>
+            <lvc:CartesianChart.AxisY>
+                <lvc:Axis Title="Sold Apps" 
+                          FontSize="15" 
+                          FontWeight="Bold"
+                          Labels="{Binding UserLabels}"></lvc:Axis>
+            </lvc:CartesianChart.AxisY>
+            <lvc:CartesianChart.DataTooltip>
+                <lvc:DefaultTooltip SelectionMode="SharedYValues"></lvc:DefaultTooltip>
+            </lvc:CartesianChart.DataTooltip>
+        </lvc:CartesianChart>
+    </Grid>-->
 </UserControl>
